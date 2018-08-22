@@ -5,7 +5,7 @@
 TOOLCHAIN= /opt/poky/1.5/sysroots/x86_64-pokysdk-linux/usr/bin/arm-poky-linux-gnueabi/arm-poky-linux-gnueabi-
 CC= $(TOOLCHAIN)gcc
 LD= $(TOOLCHAIN)gcc
-CXX=$(CC)
+CXX=$(TOOLCHAIN)g++
 
 
 SRCS+= adb.c
@@ -52,13 +52,18 @@ SRCS+= uncompr.c
 SRCS+= zutil.c
 
 CPPFLAGS+= -DADB_HOST=1
+ifneq ($(ANDROID_ROOT),)
+	CPPFLAGS+= -DADB_HOST_ON_TARGET=1
+	CPPFLAGS+= "-Dmajor(...)=0"
+	CPPFLAGS+= "-Dminor(...)=0"
+endif
 CPPFLAGS+= -DHAVE_FORKEXEC=1
 CPPFLAGS+= -DHAVE_SYMLINKS
 CPPFLAGS+= -DHAVE_TERMIO_H
 CPPFLAGS+= -DHAVE_SYS_SOCKET_H
 CPPFLAGS+= -D_GNU_SOURCE
 CPPFLAGS+= -D_XOPEN_SOURCE
-CPPFLAGS+= -std=c++11 
+CXXFLAGS+= -std=c++11
 CPPFLAGS+= -I.
 CPPFLAGS+= -I../include
 CPPFLAGS+= -I../../../external/zlib

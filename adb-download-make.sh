@@ -34,7 +34,7 @@ cp ../$makefile system/core/adb/makefile -f
 cd system/core/adb/
 echo "\n>> Make... \n"
 make clean
-make
+make TOOLCHAIN=$TOOLCHAIN
 echo "\n>> Copying adb back into current dir...\n"
 cp adb ../../../../
 echo "\n>> FINISH!\n"
